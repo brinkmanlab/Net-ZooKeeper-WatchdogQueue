@@ -3,6 +3,20 @@ Net-ZooKeeper-WatchdogQueue
 
 Watchdog and Queue wrapper around ZooKeeper using Net::ZooKeeper
 
+PURPOSE
+=======
+
+This was designed to meet an internal need, where processes in the Torque
+resource management system needed to be coordinated, there's no means to
+have a process execute after a series of other processes completes (even
+using epilogue scripts in an array job causes the scriptto run after *each*
+piece finishes, not when all pieces finish).  So ZooKeeper is being used to
+monitor a series of processes, and when all these processes detach from
+ZooKeeper, and don't hang too long, the higher level process will know
+its safe to proceed to the next step.  The queue portion of the module
+can probably be ignored if it doesn't fit your needs and used only
+as a watchdog module.
+
 SYNOPSIS
 ========
 
