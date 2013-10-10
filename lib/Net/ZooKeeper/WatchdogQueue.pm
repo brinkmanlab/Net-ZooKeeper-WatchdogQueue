@@ -164,7 +164,8 @@ sub create_timer {
 
 # Wait for the sync node to be removed or a timeout
 # to be reached
-# Returns 1 if 
+# Returns 1 if a child has started
+# otherwise return 0 if the timer expired
 
 sub wait_sync {
     my $self = shift;
