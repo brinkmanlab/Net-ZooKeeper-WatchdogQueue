@@ -134,15 +134,31 @@ sub create_queue {
     }
 }
 
+# This really isn't needed, we get all the information we need
+# to attach to an existing queue through the constructor,
+# but this allows a nicer OO model to ensure the queue
+# does indeed exist
+
+sub attach_queue {
+    my $self = shift;
+    my (%args) = @_;
+    $self->{timer} = do { $args{timer} ? $args{timer} : 120 };
+
+    die "Error, root $self->{root} doesn't exist"
+	unless($self->{zkh}->exists($self->{root}));
+    
+}
+
 sub create_timer {
     my $self = shift;
     my $process_id = shift;
+    my $sequential = shift;
 
-    # We'll make the path, sequential just for convenience (it
+    # We'll make the path, sequential just for convenience if asked (it
     # really doesn't matter I guess, just prevents NS collisions)
     # and emphemeral so it vanishes if the process dies.
     my $path = $self->{zkh}->create($self->{root} . '/timer-', $process_id,
-				    'flags' => (ZOO_EPHEMERAL | ZOO_SEQUENCE),
+				    'flags' => (ZOO_EPHEMERAL | ($sequential ? ZOO_SEQUENCE : 0)),
 				    'acl' => ZOO_OPEN_ACL_UNSAFE
 	                            );
 

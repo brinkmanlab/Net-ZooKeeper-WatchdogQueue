@@ -10,7 +10,7 @@ BEGIN { plan tests => 7 };
 
 use Net::ZooKeeper::WatchdogQueue;
 
-$watchdog = new Net::ZooKeeper::WatchdogQueue('localhost:2181',
+$watchdog = new Net::ZooKeeper::WatchdogQueue('localhost:7000',
                                                   '/mywatchdog');
 @tasks = qw{one two};
 
