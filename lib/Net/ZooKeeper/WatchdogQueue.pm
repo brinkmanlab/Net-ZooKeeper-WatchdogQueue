@@ -152,13 +152,12 @@ sub attach_queue {
 sub create_timer {
     my $self = shift;
     my $process_id = shift;
-    my $sequential = shift;
 
-    # We'll make the path, sequential just for convenience if asked (it
+    # We'll make the path, sequential just for convenience (it
     # really doesn't matter I guess, just prevents NS collisions)
     # and emphemeral so it vanishes if the process dies.
     my $path = $self->{zkh}->create($self->{root} . '/timer-', $process_id,
-				    'flags' => (ZOO_EPHEMERAL | ($sequential ? ZOO_SEQUENCE : 0)),
+				    'flags' => (ZOO_EPHEMERAL | ZOO_SEQUENCE),
 				    'acl' => ZOO_OPEN_ACL_UNSAFE
 	                            );
 
