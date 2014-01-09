@@ -163,7 +163,7 @@ sub create_timer {
 
     # Error, can't make the path
     unless($path) {
-	die "Error, can not create timer: " . $self->{zkh}->get_error();
+	die "Error, can not create timer (". $self->{root} . '/timer-' . $process_id . "): " . $self->{zkh}->get_error();
     }
 
     # Save our path for later
