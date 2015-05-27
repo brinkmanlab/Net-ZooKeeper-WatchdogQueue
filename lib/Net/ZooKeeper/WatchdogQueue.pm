@@ -117,7 +117,7 @@ sub create_queue {
 
     $self->{zkh}->create($self->{root}, 'watchdog',
 	                 'acl' => ZOO_OPEN_ACL_UNSAFE) or
-	die "Unable to create root $self->{root}";
+	die "Unable to create root $self->{root}: " . $self->{zkh}->get_error();
 
     # Put the objects in the queue
     foreach my $task (@{$args{queue}}) {
