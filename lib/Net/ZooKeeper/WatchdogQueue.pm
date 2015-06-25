@@ -350,5 +350,34 @@ sub time_alive {
     }
 }
 
+# A utility function so clients can reuse the zookeeper connection
+
+sub check_exists {
+    my $self = shift;
+    my $node = shift;
+
+    return $self->{zkh}->exists($node);
+}
+
+sub fetch_node {
+    my $self = shift;
+    my $node = shift;
+
+    my $stat = $zkh->stat();
+    if ($self->{zkh}->exists($node, 
+                             'stat' => $stat)) {
+        my $node_info = $self->{zkh}->get($node);
+        my @stats;
+        while (my($key,$value) = each(%{$stat})) {
+            push @stats, "$key: $value";
+        }
+
+        $node_info .= ': ' . join(',', @stats);
+        return $node_info;
+    } else {
+        return "Node $node not found";
+    }
+}
+
 1;
 
