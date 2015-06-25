@@ -92,7 +92,7 @@ package Net::ZooKeeper::WatchdogQueue;
 use strict;
 use Net::ZooKeeper qw(:node_flags :acls);
 
-use vars qw($VERSION);$VERSION = 0.1;
+use vars qw($VERSION);$VERSION = 0.2;
 
 sub new {
     my ($class, $hosts, $root, @args) = @_;
