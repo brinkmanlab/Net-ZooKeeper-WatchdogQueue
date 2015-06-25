@@ -363,7 +363,7 @@ sub fetch_node {
     my $self = shift;
     my $node = shift;
 
-    my $stat = $zkh->stat();
+    my $stat = $self->{zkh}->stat();
     if ($self->{zkh}->exists($node, 
                              'stat' => $stat)) {
         my $node_info = $self->{zkh}->get($node);
