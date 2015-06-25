@@ -100,6 +100,9 @@ sub new {
 
     $self->{zkh} = Net::ZooKeeper->new($hosts, @args);
 
+    # Recursively make the path if it doesn't exist
+    
+
     bless $self, $class;
     return $self;    
 }
@@ -118,6 +121,10 @@ sub create_queue {
     $self->{zkh}->create($self->{root}, 'watchdog',
 	                 'acl' => ZOO_OPEN_ACL_UNSAFE) or
 	die "Unable to create root $self->{root}";
+
+    # Ensure the node was actually created
+    die "Error, we don't seem to have made the node $self->{root}: " . $self->{zkh}->get_error()
+        unless($self->{zkh}->exists($self->{root}));
 
     # Put the objects in the queue
     foreach my $task (@{$args{queue}}) {
@@ -163,7 +170,7 @@ sub create_timer {
 
     # Error, can't make the path
     unless($path) {
-	die "Error, can not create timer (". $self->{root} . '/timer-' . $process_id . "): " . $self->{zkh}->get_error();
+	die "Error, can not create timer in ". $self->{root} . ' for ' . $process_id . ": " . $self->{zkh}->get_error();
     }
 
     # Save our path for later
